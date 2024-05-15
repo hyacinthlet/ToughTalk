@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>工具</title>
+		<style>
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			input, textarea {
+				display: inline-block;
+				box-sizing: border-box;
+				margin: 0 10px 10px 0;
+				padding: 6px 12px;
+				line-height: 26px;
+				border: #999 1px solid;
+				border-radius: 9px;
+				background-color: #fff;
+				color: #999;
+				font-size: 18px;
+				outline: none;
+				transition: all 0.3s;
+				outline: none;
+			}
+			input[type="text"] {
+				width: 300px;
+				height: 40px;
+			}
+			input[type="number"] {
+				width: 100px;
+				height: 40px;
+			}
+			input[type="file"] {
+				margin: 0 0 14px;
+				padding: 0;
+				width: 100%;
+				border: none;
+				border-radius: 0;
+				background-color: none;
+			}
+			textarea {
+				width: 100%;
+				height: 120px;
+				resize: none;
+			}
+			input:focus, textarea:focus {
+				border-color: #fb2;
+				color: #666;
+			}
+			.scroll_container {
+				overflow-x: hidden;
+				overflow-y: scroll;
+			}
+			.scroll_container::-webkit-scrollbar {
+				border: none;
+				border-radius: 8px;
+				background-color: #fff;
+			}
+			.scroll_container::-webkit-scrollbar-thumb {
+				border-radius: 8px;
+				background-color: #666;
+			}
+			
+			.item {
+				box-sizing: border-box;
+				margin: 20px 30px;
+				min-width: 20px;
+				border: #fff0 2px solid;
+				position: relative;
+				letter-spacing: 1px;
+				transition: 0.2s all;
+			}
+			.item[side="right"] {
+				text-align: right;
+			}
+			.item:hover {
+				border-color: #fff;
+			}
+			.item[selected] {
+				border-color: #fb2;
+			}
+			
+			.talk_icon {
+				display: inline-block;
+				box-sizing: border-box;
+				width: 80px;
+				height: 80px;
+				background-color: #fff;
+				border-radius: 60px;
+				position: absolute;
+			}
+			.item[side="right"]> .talk_icon {
+				right: 0px;
+			}
+			.talk_name {
+				display: inline-block;
+				font-weight: bold;
+				font-size: 18px;
+				color: #666;
+				position: absolute;
+				top: 6px;
+			}
+			.item[side="left"]> .talk_name {
+				left: 106px;
+			}
+			.item[side="right"]> .talk_name {
+				right: 106px;
+			}
+			.talk_prefix {
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				border-radius: 2px;
+				background-color: #999;
+				transform: rotateZ(45deg);
+				position: absolute;
+				top: 52px;
+			}
+			.item[side="left"]> .talk_prefix {
+				left: 94px;
+			}
+			.item[side="right"]> .talk_prefix {
+				right: 94px;
+				background-color: #8298b0;
+			}
+			.talk_container {
+				display: inline-block;
+				box-sizing: border-box;
+				margin: 0;
+				max-width: 100%;
+				vertical-align: text-top;
+				position: relative;
+			}
+			.talk_container> div {
+				padding: 8px 16px;
+				min-width: 20px;
+				min-height: 30px;
+				background-color: #ccc;
+				text-align: left;
+				font-size: 24px;
+				line-height: 30px;
+				border-radius: 8px;
+				overflow-wrap: break-word;
+			}
+			.talk_container> img {
+				box-sizing: content-box;
+				display: inline;
+				min-width: 50px;
+				min-height: 50px;
+				max-width: 100%;
+				max-height: 500px;
+				border: none;
+				border-radius: 8px;
+				vertical-align: text-top;
+			}
+			.item[side="left"]> .talk_container {
+				padding: 34px 100px 0 98px;
+			}
+			.item[side="right"]> .talk_container {
+				padding: 34px 98px 0 100px;
+			}
+			.item[side="right"]> .talk_container> div {
+				background-color: #bcd;
+			}
+			
+			.aside_container {
+				display: block;
+				box-sizing: border-box;
+				margin: 0 80px;
+				padding: 0;
+				border-radius: 8px;
+				font-size: 24px;
+				min-height: 30px;
+				line-height: 30px;
+				text-align: center;
+				color: #666;
+				overflow-wrap: break-word;
+				position: relative;
+			}
+			
+			#control {
+				box-sizing: border-box;
+				padding: 30px;
+				border: #999 2px solid;
+				border-radius: 16px;
+				background-color: #fffb; 
+				box-shadow: #aaa 0 0 20px;
+				font-size: 20px;
+				position: fixed;
+				top: 80px;
+				left: 20px;
+				user-select: none;
+				transition: width 0.3s, height 0.3s;
+			}
+			#control[type="0"] {
+				width: 10px;
+				height: 10px;
+			}
+			#control[type="0"] #debug_panel {
+				display: none;
+			}
+			#control[type="1"] {
+				width: 600px;
+				height: 800px;
+			}
+			#control[type="2"] {
+				width: 1200px;
+				height: 900px;
+			}
+			#control h3 {
+				padding-left: 8px;
+				border-left: #fb2 8px solid;
+				font-size: 20px;
+			}
+			#control p {
+				
+			}
+			#control_container {
+				box-sizing: border-box;
+				width: 100%;
+				height: 100%;
+				padding-right: 6px;
+				padding-bottom: 100px;
+				overflow-x: hidden;
+				overflow-y: scroll;
+			}
+			#control[type="0"] #control_container {
+				width: 0;
+				height: 0;
+				padding: 0;
+			}
+			#control_container::-webkit-scrollbar {
+				border: none;
+				border-radius: 8px;
+				background-color: #fff;
+			}
+			#control_container::-webkit-scrollbar-thumb {
+				border-radius: 8px;
+				background-color: #666;
+			}
+			#control_container h3> button {
+				margin-left: 10px;
+				width: 24px;
+				height: 24px;
+				border: none;
+				border-radius: 24px;
+				background-color: #fb2;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			.button_list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.button_list li {
+				display: inline-block;
+				margin: 0 10px 10px 0;
+				padding: 6px 12px;
+				height: 26px;
+				line-height: 26px;
+				border: #fb2 1px solid;
+				border-radius: 9px;
+				background-color: #fff;
+				text-align: center;
+				overflow: hidden;
+				cursor: pointer;
+				transition: all 0.3s;
+			}
+			.button_list li:hover {
+				background-color: #fb2;
+			}
+			.char_case {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+			}
+			.char_case li {
+				display: inline-block;
+				margin-bottom: 10px;
+				width: 120px;
+				text-align: center;
+				overflow: hidden;
+			}
+			.char_case img {
+				box-sizing: border-box;
+				width: 100px;
+				height: 100px;
+				border: #fff0 2px solid;
+				border-radius: 100px;
+				cursor: pointer;
+			}
+			.char_case li[selected] img {
+				border-color: #fb2;
+			}
+			.char_case li p {
+				margin: 0 auto;
+				width: max-content;
+			}
+			.image_case {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+			}
+			.image_case li {
+				display: inline-block;
+				margin-bottom: 10px;
+				width: 120px;
+				text-align: center;
+				overflow: hidden;
+			}
+			.image_case img {
+				box-sizing: border-box;
+				width: 100px;
+				height: 100px;
+				border: #fff0 2px solid;
+				cursor: pointer;
+			}
+			.image_case li[selected] img {
+				border-color: #fb2;
+			}
+			.image_case li p {
+				margin: 0 auto;
+				width: max-content;
+			}
+		</style>
+		<script>
+			var container = null;
+			var control_panel = null;
+			var drag_data = null;
+			var edit_index = -1;
+			var edit_char_index = -1;
+			var database = null;
+			var last_save_time = "未保存";
+			var debug_mode = false;
+			const empty_description = ["选择角色", "编辑文字", "未命名"];
+			const data_split_symbol = "/;";
+			const max_image_count = 200;
+			const database_group_count = [2, 4];
+			window.onload = function() {
+				container = document.getElementById("container");
+				control_panel = document.getElementById("control");
+				let data_container = document.getElementById("database");
+				load_data(data_container.innerText);
+				let drag_bean = control_panel.children[0];
+				drag_bean.ondragstart = function(event) {
+					drag_data = {
+						cx: event.clientX,
+						cy: event.clientY,
+						ix: control_panel.offsetLeft,
+						iy: control_panel.offsetTop
+					};
+				};
+				drag_bean.ondrag = function(event) {
+					drag_control_panel();
+				};
+				drag_bean.ondragend = function(event) {
+					drag_control_panel();
+				};
+				drag_bean.onclick = function(event) {
+					let type = control_panel.getAttribute("type");
+					++type;
+					type %= 3;
+					control_panel.setAttribute("type", type);
+				};
+			}
+			function load_data(data) {
+				database = {
+					character: [],
+					content: []
+				};
+				if (data == null || data.length == 0) {
+					return;
+				}
+				clear_select();
+				data = data.split(data_split_symbol);
+				
+				let offset = 0;
+				let loop = parseInt(data[offset]);
+				if (debug_mode) {
+					
+				}
+				debug_log("load total " + data[offset] + " characters.");
+				++offset;
+				data.character = new Array(loop);
+				for (let i = 0; i < loop * database_group_count[0]; ++i) {
+					database.character[i] = data[offset + i];
+					if (i % database_group_count[0] == 1) {
+						debug_log("(" + (i + database_group_count[0] - 1) / database_group_count[0] + "/" + loop + ") load " + data[offset + i]);
+					}
+				}
+				
+				offset += loop * database_group_count[0];
+				loop = parseInt(data[offset]);
+				debug_log("load total " + data[offset] + " talks.");
+				++offset;
+				data.content = new Array(loop);
+				for (let i = 0; i < loop * database_group_count[1]; ++i) {
+					database.content[i] = data[offset + i];
+					if (i % database_group_count[1] == 2) {
+						debug_log("(" + (i + database_group_count[1] - 2) / database_group_count[1] + "/" + loop + ") load " + data[offset + i]);
+					}
+				}
+				document.getElementById("database").innerText = data.join(data_split_symbol);
+				
+				while(container.firstChild) {
+					container.removeChild(container.firstChild);
+				}
+				let box = document.getElementById("char_case");
+				while(box.firstChild) {
+					box.removeChild(box.firstChild);
+				}
+				list_all_char(document.getElementById("char_case"));
+				list_all_content(container);
+			}
+			function load_image_database(that) {
+				let count = that.value;
+				if (isNaN(count) || count < 0) {
+					count = 0
+				}
+				if (count > max_image_count) {
+					count = max_image_count;
+				}
+				that.value = count;
+				let image_box = document.getElementById("image_case");
+				for (let i = image_box.childElementCount + 1; i <= count; ++i) {
+					let li = document.createElement("li");
+					image_box.appendChild(li);
+					let item = document.createElement("img");
+					item.src = "./img/" + i + ".png";
+					li.appendChild(item);
+					item = document.createElement("p");
+					item.innerText = "编号" + i;
+					li.appendChild(item);
+				}
+				for (let i = image_box.childElementCount - 1; i >= count; --i) {
+					image_box.children[i].remove();
+				}
+			}
+			function add_data(type, info) {
+				if (type == "add_char") {
+					database.character.push(info[0]);
+					database.character.push(info[1]);
+				}
+				else if (type == "add_talk") {
+					database.content.push(info[0]);
+					database.content.push(info[1]);
+					database.content.push(info[2]);
+					database.content.push(info[3]);
+				}
+			}
+			function store_data() {
+				let data_container = document.getElementById("database");
+				let data = (database.character.length / database_group_count[0]);
+				let len = data;
+				debug_log("store total " + len + " characters.");
+				for (let i = 0; i < database.character.length; ++i) {
+					data += data_split_symbol + database.character[i];
+					if (i % database_group_count[0] == 1) {
+						debug_log(get_progress((i + database_group_count[0] - 1) / database_group_count[0], len) + " store " + database.character[i]);
+					}
+				}
+				data += data_split_symbol + parseInt(database.content.length / database_group_count[1]);
+				
+				len = database.content.length / database_group_count[1];
+				debug_log("store total " + len + " talks.");
+				for (let i = 0; i < database.content.length; ++i) {
+					data += data_split_symbol + database.content[i];
+					if (i % database_group_count[1] == 2) {
+						debug_log(get_progress((i + database_group_count[1] - 2) / database_group_count[1], len) + " store " + database.content[i]);
+					}
+				}
+				data_container.innerText = data;
+				localStorage.setItem("el_data", data);
+				let date = new Date();
+				last_save_time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" + date.getSeconds().toString().padStart(2, '0');
+				update_control_tip();
+				// debug_log(data);
+			}
+			function new_item(type, text) {
+				let select_flag = false;
+				let insert_index = edit_index + 1;
+				if (text == null) {
+					let char_id = -1;
+					let url = null;
+					if (type != 4 && type != 5) {
+						url = empty_description[1];
+					}
+					if (is_index_valid(edit_char_index * database_group_count[0], database.character.length)) {
+						text = [database_get_char_url(edit_char_index), database_get_char_name(edit_char_index), url, 0];
+						char_id = edit_char_index;
+					}
+					else {
+						text = [null, empty_description[0], url, 0];
+					}
+					database.content.push(type);
+					database.content.push(char_id);
+					database.content.push(text[2]);
+					database.content.push(0);
+					select_flag = true;
+				}
+				let div = document.createElement("div");
+				div.setAttribute("class", "item");
+				div.setAttribute("type", type);
+				div.setAttribute("onclick", "select_item(this, null)");
+				container.appendChild(div);
+				
+				if (type == 1) {
+					new_item_talk(div, text);
+					div.setAttribute("side", "left");
+				}
+				else if (type == 2) {
+					new_item_talk(div, text);
+					div.setAttribute("side", "right");
+				}
+				else if (type == 3) {
+					new_item_aside(div, text);
+				}
+				else if (type == 4) {
+					new_item_image(div, text);
+					div.setAttribute("side", "left");
+				}
+				else if (type == 5) {
+					new_item_image(div, text);
+					div.setAttribute("side", "right");
+				}
+				else {
+					new_item_aside(div, [null, -1, "错误的条目", 0]);
+				}
+				
+				if (select_flag) {
+					select_item(div, null);
+					if (is_index_valid(insert_index, container.childElementCount)) {
+						change_item_index(insert_index - edit_index);
+					}
+					store_data();
+				}
+			}
+			function new_item_talk(parent, data) {
+				let inner = document.createElement("div");
+				inner.innerText = data[2];
+				new_item_talk_base(parent, data, true).appendChild(inner);
+			}
+			function new_item_aside(parent, data) {
+				let inner = document.createElement("div");
+				inner.setAttribute("class", "aside_container");
+				inner.innerText = data[2];
+				parent.appendChild(inner);
+			}
+			function new_item_image(parent, data) {
+				let inner = document.createElement("img");
+				inner.setAttribute("image_id", "0");
+				if (data[2] != null && data[2] != "null") {
+					inner.src = data[2];
+					let stra = data[2].lastIndexOf('/') + 1;
+					let strb = data[2].lastIndexOf('.');
+					inner.setAttribute("image_id", parseInt(data[2].substr(stra, strb - stra)));
+				}
+				if (parseInt(data[3]) >= 50) {
+					inner.style.width = data[3] + "px";
+				}
+				new_item_talk_base(parent, data, false).appendChild(inner);
+			}
+			function new_item_talk_base(parent, data, need_prefix) {
+				let inner = document.createElement("img");
+				inner.setAttribute("class", "talk_icon");
+				if (data[0] != null) {
+					inner.src = data[0];
+				}
+				parent.appendChild(inner);
+				
+				if (need_prefix) {
+					inner = document.createElement("div");
+					inner.setAttribute("class", "talk_prefix");
+					parent.appendChild(inner);
+				}
+				
+				inner = document.createElement("div");
+				inner.setAttribute("class", "talk_name");
+				inner.innerText = data[1];
+				parent.appendChild(inner);
+				
+				inner = document.createElement("div");
+				inner.setAttribute("class", "talk_container");
+				parent.appendChild(inner);
+				return inner;
+			}
+			function copy_item() {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				let item = container.children[edit_index];
+				let new_item = item.cloneNode(true);
+				let insert_index = edit_index + 1;
+				for (let i = 0; i < database_group_count[1]; ++i) {
+					database.content.push(database.content[database_group_count[1] * edit_index + i]);
+				}
+				container.appendChild(new_item);
+				select_item(null, container.childElementCount - 1);
+				if (is_index_valid(insert_index, container.childElementCount)) {
+					change_item_index(insert_index - edit_index);
+				}
+				store_data();
+			}
+			function remove_item() {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				container.children[edit_index].remove();
+				database.content.splice(edit_index * database_group_count[1], database_group_count[1]);
+				store_data();
+				clear_select();
+			}
+			function select_item(that, index) {
+				let new_index = 0;
+				if (index != null) {
+					if (index < 0) {
+						index = 0;
+					}
+					else if (index >= container.childElementCount) {
+						index = container.childElementCount - 1;
+					}
+					new_index = index;
+					that = container.children[new_index];
+				}
+				else {
+					new_index = get_select_item_index(that);
+				}
+				
+				let former_index = edit_index;
+				clear_select();
+				if (former_index == new_index) {
+					return;
+				}
+				edit_index = new_index;
+				container.children[edit_index].setAttribute("selected", true);
+				show_item_custom_control(that);
+			}
+			function get_select_item_index(that) {
+				let temp = that;
+				let index = 0;
+				while (temp.previousElementSibling) {
+					++index;
+					temp = temp.previousElementSibling;
+				}
+				return index;
+			}
+			function show_item_custom_control(that) {
+				let _container = document.getElementById("control_custom");
+				while (_container.firstChild) {
+					_container.firstChild.remove();
+				}
+				let type = that.getAttribute("type");
+				let text_div = null;
+				let op = null;
+				if (type == 1 || type == 2 || type == 4 || type == 5) {
+					text_div = that.getElementsByClassName("talk_container")[0].children[0];
+					op = document.createElement("div");
+					op.innerText = "点击角色一览中的头像进行变更";
+					new_edit_item(_container, "角色变更", op, true);
+				}
+				else if (type == 3) {
+					text_div = that.getElementsByClassName("aside_container")[0];
+				}
+				
+				if (type == 1 || type == 2 || type == 3) {
+					op = document.createElement("textarea");
+					op.innerText = text_div.innerText;
+					op.oninput = function(event) {
+						text_div.innerText = op.value;
+					};
+					op.onblur = function(event) {
+						database.content[edit_index * database_group_count[1] + 2] = op.value;
+						store_data();
+					};
+					new_edit_item(_container, "文本编辑", op, false);
+				}
+				else if (type == 4 || type == 5) {
+					op = document.createElement("div");
+					let p = document.createElement("p");
+					p.innerText = "内容（输入图库中的编号）";
+					op.appendChild(p);
+					let inner = document.createElement("input");
+					inner.setAttribute("type", "number");
+					inner.value = text_div.getAttribute("image_id");
+					inner.onchange = function(event) {
+						show_image_preview(inner);
+						let index = inner.value;
+						text_div.src = database_get_image_url(index);
+						text_div.setAttribute("image_id", index);
+					};
+					inner.onblur = function(event) {
+						show_image_preview(inner);
+						let index = inner.value;
+						text_div.src = database_get_image_url(index);
+						text_div.setAttribute("image_id", index);
+						change_item_image(database_get_image_url(index), null);
+					};
+					op.appendChild(inner);
+					let inner2 = document.createElement("img");
+					inner2.setAttribute("style", "width: 60px; height: 60px; vertical-align: middle;");
+					op.appendChild(inner2);
+					p = document.createElement("p");
+					p.innerText = "大小（输入0即为图片原始大小）";
+					op.appendChild(p);
+					inner2 = document.createElement("input");
+					inner2.setAttribute("type", "number");
+					inner2.value = text_div.offsetWidth;
+					inner2.onchange = function(event) {
+						text_div.style.width = inner2.value + "px";
+					};
+					inner2.onblur = function(event) {
+						text_div.style.width = inner2.value + "px";
+						change_item_image(null, inner2.value);
+					};
+					op.appendChild(inner2);
+					new_edit_item(_container, "图片编辑", op, false);
+					show_image_preview(inner);
+				}
+				update_control_tip();
+			}
+			function shift_select_item(offset) {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				let index = edit_index + offset;
+				select_item(null, index);
+			}
+			function change_item_char(char_index) {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				if (database.content[edit_index * database_group_count[1] + 1] == char_index) {
+					return;
+				}
+				let item = container.children[edit_index];
+				let type = item.getAttribute("type")
+				if (type != 1 && type != 2 && type != 4 && type != 5) {
+					return;
+				}
+				item.getElementsByClassName("talk_icon")[0].src = database_get_char_url(char_index);
+				item.getElementsByClassName("talk_name")[0].innerText = database_get_char_name(char_index);
+				database.content[edit_index * database_group_count[1] + 1] = char_index;
+				store_data();
+			}
+			function change_item_image(url, size) {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				let item = container.children[edit_index];
+				let type = item.getAttribute("type")
+				if (type != 4 && type != 5) {
+					return;
+				}
+				if (url != null) {
+					item.getElementsByClassName("talk_container")[0].firstChild.src = url;
+					database.content[edit_index * database_group_count[1] + 2] = url;
+				}
+				if (size != null) {
+					if (size < 50) {
+						item.getElementsByClassName("talk_container")[0].firstChild.style.width = "";
+						database.content[edit_index * database_group_count[1] + 3] = 0;
+					}
+					else {
+						item.getElementsByClassName("talk_container")[0].firstChild.style.width = size + "px";
+						database.content[edit_index * database_group_count[1] + 3] = size;
+					}
+				}
+				store_data();
+			}
+			function change_item_type() {
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				let item = container.children[edit_index];
+				let type = item.getAttribute("type");
+				let side = "left";
+				if (type == 1) {
+					type = 2;
+					side = "right";
+				}
+				else if (type == 2) {
+					type = 1;
+				}
+				else if (type == 4) {
+					type = 5;
+					side = "right";
+				}
+				else if (type == 5) {
+					type = 1;
+				}
+				database.content[database_group_count[1] * edit_index] = type;
+				item.setAttribute("type", type);
+				item.setAttribute("side", side);
+				store_data();
+			}
+			function change_item_index(offset) {
+				if (isNaN(offset) || offset == 0) {
+					return;
+				}
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					return;
+				}
+				let new_index = edit_index + offset;
+				if (!is_index_valid(new_index, container.childElementCount)) {
+					return;
+				}
+				let keep = [database.content[database_group_count[1] * edit_index],
+							database.content[database_group_count[1] * edit_index + 1],
+							database.content[database_group_count[1] * edit_index + 2],
+							database.content[database_group_count[1] * edit_index + 3]];
+				for (let i = 0; i < Math.abs(offset); ++i) {
+					let op_index = [edit_index, edit_index];
+					if (new_index > edit_index) {
+						op_index[0] += i;
+						op_index[1] += i + 1;
+					}
+					else {
+						op_index[0] -= i;
+						op_index[1] -= (i + 1);
+					}
+					for (let temp = 0; temp < database_group_count[1]; ++temp) {
+						database.content[database_group_count[1] * op_index[0] + temp] = database.content[database_group_count[1] * op_index[1] + temp];
+					}
+				}
+				for (let temp = 0; temp < database_group_count[1]; ++temp) {
+					database.content[database_group_count[1] * new_index + temp] = keep[temp];
+				}
+				let item = container.children[edit_index];
+				edit_index = new_index;
+				if (offset < 0) {
+					container.insertBefore(item, container.children[edit_index]);
+				}
+				else if (edit_index < container.childElementCount - 1) {
+					container.insertBefore(item, container.children[edit_index + 1]);
+				}
+				else {
+					container.appendChild(item);
+				}
+				store_data();
+			}
+			function clear_select() {
+				if (is_index_valid(edit_index, container.childElementCount)) {
+					container.children[edit_index].removeAttribute("selected");
+				}
+				edit_index = -1;
+				let _container = document.getElementById("control_custom");
+				while (_container.firstChild) {
+					_container.removeChild(_container.firstChild);
+				}
+				_container.innerText = "请先选择元素";
+				update_control_tip();
+			}
+			function select_char(that) {
+				let temp = that.parentElement;
+				let new_index = 0;
+				while (temp.previousElementSibling) {
+					++new_index;
+					temp = temp.previousElementSibling;
+				}
+				if (!is_index_valid(new_index * database_group_count[0], database.character.length)) {
+					return;
+				}
+				document.getElementById("char_name_input").value = database_get_char_name(new_index);
+				let box = document.getElementById("char_case");
+				if (is_index_valid(edit_char_index * database_group_count[0], database.character.length)) {
+					box.children[edit_char_index].removeAttribute("selected");
+				}
+				edit_char_index = new_index;
+				box.children[edit_char_index].setAttribute("selected", true);
+				change_item_char(edit_char_index);
+			}
+			function open_char_image() {
+				let path = document.getElementById("char_file_path");
+				if (path.value.length != 0) {
+					new_char(null, database_get_image_url(path.value));
+					return;
+				}
+				else {
+					return;
+				}
+				// else if (document.getElementById("char_file").files.length == 0) {
+				// 	return;
+				// }
+				let file = document.getElementById("char_file").files[0];
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function(event) {
+					new_char(null, event.target.result);
+				};
+			}
+			function new_char(index, path) {
+				let img = document.createElement("img");
+				img.setAttribute("onclick", "select_char(this)");
+				let name = document.createElement("p");
+				if (index == null) {
+					img.src = path;
+					name.innerText = "未命名";
+					database.character.push(path);
+					database.character.push("未命名");
+					store_data();
+				}
+				else {
+					img.src = database.character[index];
+					name.innerText = database.character[index + 1];
+				}
+				let li = document.createElement("li");
+				li.appendChild(img);
+				li.appendChild(name);
+				document.getElementById("char_case").appendChild(li);
+			}
+			function remove_char() {
+				if (!is_index_valid(edit_char_index * database_group_count[0], database.character.length)) {
+					return;
+				}
+				store_data();
+				database.character.splice(edit_char_index * database_group_count[0], database_group_count[0]);
+				for (let i = 0; i < database.content.length / database_group_count[1]; ++i) {
+					if (database.content[database_group_count[1] * i + 1] == edit_char_index) {
+						database.content[database_group_count[1] * i + 1] = -1;
+						container.children[i].getElementsByClassName("talk_icon")[0].src = "";
+						container.children[i].getElementsByClassName("talk_name")[0].innerText = empty_description[0];
+					}
+					else if (database.content[database_group_count[1] * i + 1] > edit_char_index) {
+						--database.content[database_group_count[1] * i + 1];
+					}
+				}
+				document.getElementById("char_case").children[edit_char_index].remove();
+				edit_char_index = -1;
+				store_data();
+			}
+			function change_char_name(that) {
+				if (!is_index_valid(edit_char_index * database_group_count[0], database.character.length)) {
+					return;
+				}
+				document.getElementById("char_case").children[edit_char_index].children[1].innerText = that.value;
+				database.character[database_group_count[0] * edit_char_index + 1] = that.value;
+				store_data();
+				for (let i = 0; i < database.content.length / database_group_count[1]; ++i) {
+					if (database.content[database_group_count[1] * i + 1] == edit_char_index) {
+						let item = container.children[i].getElementsByClassName("talk_name")[0];
+						if (item) {
+							item.innerText = that.value;
+						}
+					}
+				}
+				store_data();
+			}
+			function change_char_icon() {
+				if (!is_index_valid(edit_char_index * database_group_count[0], database.character.length)) {
+					return;
+				}
+				let url = database_get_image_url(document.getElementById("char_file_path").value);
+				document.getElementById("char_case").children[edit_char_index].children[0].src = url;
+				database.character[database_group_count[0] * edit_char_index] = url;
+				store_data();
+			}
+			function list_all_char(parent) {
+				for (let i = 0; i < database.character.length; i += 2) {
+					let img = document.createElement("img");
+					img.setAttribute("onclick", "select_char(this)");
+					img.src = database.character[i];
+					let name = document.createElement("p");
+					name.innerText = database.character[i + 1];
+					let li = document.createElement("li");
+					li.appendChild(img);
+					li.appendChild(name);
+					parent.appendChild(li);
+				}
+			}
+			function list_all_content(parent) {
+				for (let i = 0; i < database.content.length; i += database_group_count[1]) {
+					let img = "";
+					let name = empty_description[0];
+					let size = 0;
+					if (database.content[i + 1] >= 0) {
+						img = database_get_char_url(database.content[i + 1]);
+						name = database_get_char_name(database.content[i + 1]);
+					}
+					if (database.content[i + 3] >= 50) {
+						size = database.content[i + 3];
+					}
+					new_item(database.content[i], [img, name, database.content[i + 2], size]);
+				}
+			}
+			function new_edit_item(parent, text, child, hide) {
+				let h3 = document.createElement("h3");
+				h3.innerText = text;
+				let btn = document.createElement("button");
+				h3.appendChild(btn)
+				parent.appendChild(h3);
+				parent.appendChild(child);
+				if (hide) {
+					collapse_node(btn);
+				}
+				else {
+					expand_node(btn);
+				}
+			}
+			function show_image_preview(that) {
+				let index = set_index_valid(that.value, 1, max_image_count);
+				that.value = index;
+				that.nextElementSibling.src = database_get_image_url(index);
+			}
+			function collapse_node(that) {
+				that.parentNode.nextElementSibling.style.display = "none";
+				that.setAttribute("onclick", "expand_node(this)");
+				that.innerText = "+";
+			}
+			function expand_node(that) {
+				that.parentNode.nextElementSibling.style.display = null;
+				that.setAttribute("onclick", "collapse_node(this)");
+				that.innerText = "-";
+			}
+			function is_index_valid(index, limit) {
+				if (index < 0 || index >= limit) {
+					return false;
+				}
+				return true;
+			}
+			function set_index_valid(index, min, max) {
+				if (isNaN(index) || index < min) {
+					return min;
+				}
+				else if (index > max) {
+					return max;
+				}
+				return index;
+			}
+			function drag_control_panel() {
+				let pos = {
+					x: event.clientX - drag_data.cx + drag_data.ix,
+					y: event.clientY - drag_data.cy + drag_data.iy
+				}
+				if (pos.x <= 0 && pos.y <= 0) {
+					return;
+				}
+				if (pos.x < 10) {
+					pos.x = 10;
+				}
+				else if (pos.x > window.innerWidth - control_panel.offsetWidth - 10) {
+					pos.x = window.innerWidth - control_panel.offsetWidth - 10;
+				}
+				if (pos.y < 10) {
+					pos.y = 10;
+				}
+				else if (pos.y > window.innerHeight - control_panel.offsetHeight - 10) {
+					pos.y = window.innerHeight - control_panel.offsetHeight - 10;
+				}
+				
+				if (pos.x < 10) {
+					pos.x = 10;
+				}
+				if (pos.y < 10) {
+					pos.y = 10;
+				}
+				control_panel.style.left = pos.x + "px";
+				control_panel.style.top = pos.y + "px";
+			}
+			function update_control_tip() {
+				let str = "";
+				if (!is_index_valid(edit_index, container.childElementCount)) {
+					str = "未在编辑，";
+				}
+				else {
+					str = "正在编辑第" + (edit_index + 1) + "项，";	
+				}
+				str += "上次保存时间：" + last_save_time;
+				document.getElementById("debug_panel").innerText = str;
+			}
+			function database_get_char_url(id) {
+				if (!is_index_valid(id * 2, database.character.length)) {
+					return "";
+				}
+				return database.character[id * 2];
+			}
+			function database_get_char_name(id) {
+				if (!is_index_valid(id * 2, database.character.length)) {
+					return empty_description[2];
+				}
+				return database.character[id * 2 + 1];
+			}
+			function database_get_image_url(id) {
+				return "./img/" + id + ".png";
+			}
+			function get_progress(cur, max) {
+				return "(" + cur + "/" + max + ")";
+			}
+			function switch_debug_mode() {
+				debug_mode = !debug_mode;
+				if (debug_mode) {
+					document.getElementById("database").style.display = null;
+				}
+				else {
+					document.getElementById("database").style.display = "none";
+				}
+			}
+			function debug_log(str) {
+				if (!debug_mode) {
+					return;
+				}
+				console.log(str);
+			}
+		</script>
+	</head>
+	<body style="background-color: #fff;">
+		<div id="container" onclick="if (event.target == event.currentTarget) clear_select()" style="background-color: #eee; width: 800px; min-height: 600px; margin: 0 auto 500px; padding: 40px 0;">
+		</div>
+		<div id="control" type=1>
+			<div draggable="true" style="width: 32px; height: 32px; background-color: #fb2; border-radius: 20px; position: absolute; left: -16px; top: -16px; cursor: move;"></div>
+			<div id="control_container" class="scroll_container">
+				<h3 id="debug_panel" style="background-color: #fffa; position: absolute; overflow: hidden;">未在编辑</h3>
+				<hr style="margin: 80px 0 0; border: #fb2 1px solid;" />
+				<h2>常规</h2>
+				<h3>编辑<button onclick="collapse_node(this)">-</button></h3>
+				<div>
+					<p>增加</p>
+					<ul class="button_list">
+						<li onclick="new_item(1, null)">文字对话</li>
+						<li onclick="new_item(3, null)">旁白</li>
+						<li onclick="new_item(4, null)">图片对话</li>
+						<li onclick="copy_item()">复制此项</li>
+					</ul>
+					<p>删除</p>
+					<ul class="button_list">
+					<li onclick="remove_item()">删除此项</li>
+					</ul>
+					<p>其他</p>
+					<ul class="button_list">
+						<li onclick="shift_select_item(-1)">上一项</li>
+						<li onclick="shift_select_item(1)">下一项</li>
+						<li onclick="change_item_index(-1)">上移一项</li>
+						<li onclick="change_item_index(1)">下移一项</li>
+						<li onclick="change_item_type()">左右方转换</li>
+					</ul>
+				</div>
+				<h3>角色<button onclick="expand_node(this)">+</button></h3>
+				<div style="display: none;">
+					<p>头像选择（输入图库中编号）</p>
+					<input id="char_file_path" onchange="show_image_preview(this)" min="0" max="200" type="number" value="1" />
+					<img style="width: 60px; height: 60px; vertical-align: middle;">
+<!-- 					<p>添加方式二（不推荐）</p>
+					<input id="char_file" type="file" /> -->
+					<p>操作</p>
+					<ul class="button_list">
+						<li onclick="open_char_image(null)">增加</li>
+						<li onclick="remove_char(null)">删除</li>
+						<li onclick="change_char_icon()">应用新头像</li>
+					</ul>
+					<p>名称修改</p>
+					<input id="char_name_input" type="text" onblur="change_char_name(this)" />
+					<p>总览</p>
+					<div class="scroll_container" style="width: 100%; min-height: 50px; max-height: 400px;">
+						<ul id="char_case" class="char_case"></ul>
+					</div>
+				</div>
+				<h3>图库<button onclick="expand_node(this)">+</button></h3>
+				<div style="display: none;">
+					<p>图片数目（输入同级目录img文件夹下.png文件数量）</p>
+					<input onchange="load_image_database(this)" min="0" max="200" type="number" value="0" />
+					<p>总览</p>
+					<div class="scroll_container" style="width: 100%; min-height: 50px; max-height: 400px;">
+						<ul id="image_case" class="image_case"></ul>
+					</div>
+				</div>
+				<h3>数据<button onclick="expand_node(this)">+</button></h3>
+				<div style="display: none;">
+					<p>嗯聊v1.0.0</p>
+					<p>于2024.5.8</p>
+					<p>@WDD</p>
+					<p><b>注意：下方localStorage存储仅供不小心关闭网页或刷新网页后进行数据恢复，请使用ctrl+s保存作品数据</b></p>
+					<ul class="button_list">
+						<li onclick="load_data(localStorage.getItem('el_data'))">从localStorage中载入数据</li>
+						<li onclick="if (confirm('确认清除数据？')) {if (confirm('确认清除数据？')) localStorage.removeItem('el_data')}">清空localStorage数据</li>
+					</ul>
+					<p>开发者</p>
+					<ul class="button_list">
+						<li onclick="switch_debug_mode()">切换debug模式</li>
+					</ul>
+					<div id="database" style="display: none;"></div>
+				</div>
+				<h2>定制</h2>
+				<div id="control_custom" style="width: 100%;">请先选择元素</div>
+			</div>
+		</div>
+	</body>
+</html>
